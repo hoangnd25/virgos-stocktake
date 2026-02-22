@@ -16,10 +16,11 @@ import type { BarcodeType } from "@/types/prestashop";
 interface BarcodeScannerProps {
   onScan: (barcode: string, type: BarcodeType) => void;
   isProcessing: boolean;
+  queueLength: number;
   error: string | null;
 }
 
-export function BarcodeScanner({ onScan, isProcessing, error }: BarcodeScannerProps) {
+export function BarcodeScanner({ onScan, isProcessing, queueLength, error }: BarcodeScannerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
   const [detectedType, setDetectedType] = useState<BarcodeType | null>(null);
@@ -72,7 +73,9 @@ export function BarcodeScanner({ onScan, isProcessing, error }: BarcodeScannerPr
   };
 
   const statusMessage = (() => {
-    if (isProcessing) return "Searching...";
+    if (isProcessing && queueLength > 0) return `Processing... (${queueLength} queued)`;
+    if (isProcessing) return "Processing...";
+    if (queueLength > 0) return `${queueLength} scan${queueLength > 1 ? "s" : ""} queued...`;
     if (error) return error;
     return "Ready to scan...";
   })();
@@ -116,7 +119,6 @@ export function BarcodeScanner({ onScan, isProcessing, error }: BarcodeScannerPr
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            readOnly={isProcessing}
             placeholder="Scan or type barcode..."
             size="lg"
             fontSize="xl"
