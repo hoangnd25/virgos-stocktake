@@ -26,18 +26,24 @@ export function BarcodeScanner({ onScan, isProcessing, error }: BarcodeScannerPr
   const [shakeKey, setShakeKey] = useState(0);
   const prevErrorRef = useRef<string | null>(null);
 
-  // Focus input when not processing
+  // Focus input on mount, when processing ends, or when a new error occurs
   useEffect(() => {
     if (!isProcessing) {
-      inputRef.current?.focus();
+      // Small delay to let any remount (shake animation key change) settle first
+      const id = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(id);
     }
+    return undefined;
   }, [isProcessing]);
 
-  // Trigger shake animation when a new error appears
+  // Trigger shake animation when a new error appears and re-focus
   useEffect(() => {
     if (error && error !== prevErrorRef.current) {
       prevErrorRef.current = error;
-      const id = setTimeout(() => setShakeKey((k) => k + 1), 0);
+      const id = setTimeout(() => {
+        setShakeKey((k) => k + 1);
+        inputRef.current?.focus();
+      }, 0);
       return () => clearTimeout(id);
     } else if (!error) {
       prevErrorRef.current = null;
@@ -110,7 +116,7 @@ export function BarcodeScanner({ onScan, isProcessing, error }: BarcodeScannerPr
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            disabled={isProcessing}
+            readOnly={isProcessing}
             placeholder="Scan or type barcode..."
             size="lg"
             fontSize="xl"
