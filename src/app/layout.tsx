@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { Provider } from "@/components/ui/provider";
 
 export const metadata: Metadata = {
   title: "Virgos Stocktake",
@@ -12,9 +12,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
+    // suppressHydrationWarning is needed because Chakra UI's color mode detection
+    // modifies the html element's attributes on the client, which would otherwise
+    // cause a React hydration mismatch warning.
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
