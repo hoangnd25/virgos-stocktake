@@ -1,0 +1,40 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "plan": {
+      "model": "github-copilot/claude-opus-4.5",
+    },
+    "build": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "general": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "explore": {
+      "model": "github-copilot/claude-haiku-4.5",
+    },
+  },
+  "mcp": {
+    "chakra-ui": {
+      "type": "local",
+      "command": ["pnpm", "dlx", "@chakra-ui/react-mcp"],
+      "enabled": true,
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["pnpm", "dlx", "chrome-devtools-mcp@latest"]
+    }
+  },
+  "permission": {
+    "bash": {
+      "git status": "allow",
+      "git diff": "allow",
+      "git *": "ask",
+      "*": "allow",
+    },
+  },
+  "plugin": [
+    "@tarquinen/opencode-dcp@latest",
+    "@franlol/opencode-md-table-formatter@0.0.3",
+  ],
+}
