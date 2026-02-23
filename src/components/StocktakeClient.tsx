@@ -195,6 +195,7 @@ export function StocktakeClient({ shopUrl }: StocktakeClientProps) {
             isProcessing={isProcessing || isUpdating}
             queueLength={queueLength}
             error={scanError}
+            onDismissError={() => setScanError(null)}
           />
 
           <LastScannedCard item={lastItem} isUpdating={isUpdating} />

@@ -23,17 +23,11 @@ function normalizeUrl(url: string): string {
   return `${base}/api`;
 }
 
-function getShopBase(shopUrl: string): string {
-  return shopUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
-}
-
-// PrestaShop public image URL — no auth required
-// Image ID 1305 → /img/p/1/3/0/5/1305.jpg
-function buildImageUrl(shopUrl: string, imageId: number | string | null): string | null {
+// Returns a same-origin proxy URL so iOS Safari/Chrome never see a cross-origin
+// or mixed-content image request directly.
+function buildImageUrl(_shopUrl: string, imageId: number | string | null): string | null {
   if (!imageId) return null;
-  const base = getShopBase(shopUrl);
-  const digits = String(imageId).split("").join("/");
-  return `${base}/img/p/${digits}/${imageId}.jpg`;
+  return `/api/prestashop/image?id=${imageId}`;
 }
 
 function extractProductName(product: PrestashopProduct): string {

@@ -39,3 +39,15 @@ body {
   animation: flashGreen 1.5s ease-out;
 }
 
+/* Quagga camera scanner viewport */
+.quagga-viewport video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.quagga-viewport canvas {
+  display: none !important;
+}
+
