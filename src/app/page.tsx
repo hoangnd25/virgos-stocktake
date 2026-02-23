@@ -7,11 +7,17 @@ export const metadata: Metadata = {
   title: "PrestaShop Stocktake — Login",
 };
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ shop_url?: string }>;
+}) {
   const credentials = await getCredentials();
   if (credentials) {
     redirect("/stocktake");
   }
+
+  const { shop_url } = await searchParams;
 
   return (
     <main
@@ -63,7 +69,7 @@ export default async function LoginPage() {
         </p>
       </div>
 
-      <LoginForm />
+      <LoginForm initialShopUrl={shop_url} />
 
       <p
         style={{

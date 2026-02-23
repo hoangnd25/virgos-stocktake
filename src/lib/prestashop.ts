@@ -12,7 +12,11 @@ function getAuthHeader(apiKey: string): string {
 }
 
 function normalizeUrl(url: string): string {
-  const base = url.replace(/\/$/, "");
+  let withProtocol = url.trim();
+  if (!withProtocol.match(/^https?:\/\//i)) {
+    withProtocol = `https://${withProtocol}`;
+  }
+  const base = withProtocol.replace(/\/$/, "");
   if (/\/api(\/.*)?$/.test(base)) {
     return base.replace(/\/api(\/.*)?$/, "/api");
   }

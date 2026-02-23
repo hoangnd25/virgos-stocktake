@@ -14,9 +14,13 @@ import {
 } from "@chakra-ui/react";
 import type { Credentials } from "@/types/stocktake";
 
-export function LoginForm() {
+interface LoginFormProps {
+  initialShopUrl?: string;
+}
+
+export function LoginForm({ initialShopUrl = "" }: LoginFormProps) {
   const router = useRouter();
-    const [shopUrl, setShopUrl] = useState("https://virgosfamily.com");
+  const [shopUrl, setShopUrl] = useState(initialShopUrl);
   const [apiKey, setApiKey] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,8 +72,8 @@ export function LoginForm() {
         <Field.Root required>
           <Field.Label fontWeight="medium">Shop URL</Field.Label>
           <Input
-            type="url"
-            placeholder="https://myshop.com"
+            type="text"
+            placeholder="shop.com or https://myshop.com"
             value={shopUrl}
             onChange={(e) => setShopUrl(e.target.value)}
             disabled={isLoading}
